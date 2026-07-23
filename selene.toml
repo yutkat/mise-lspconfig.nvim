@@ -1,0 +1,8 @@
+std = "neovim"
+
+[rules]
+global_usage = "allow"
+multiple_statements = "allow"
+# vim.cmd.normal({ "016E", bang = true }) is the documented calling
+# convention of the Neovim API, so mixed tables are unavoidable here.
+mixed_table = "allow"

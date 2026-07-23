@@ -1,0 +1,48 @@
+---
+name: update-registry
+on:
+  schedule:
+    - cron: "0 3 * * 1"
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: jdx/mise-action@v4.2.1
+        with:
+          install: false
+      - uses: rhysd/action-setup-vim@v1.6.1
+        with:
+          neovim: true
+          version: stable
+      - name: Download mason registry
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download --repo mason-org/mason-registry \
+            --pattern registry.json.zip --output /tmp/registry.json.zip
+          unzip -o /tmp/registry.json.zip -d /tmp
+      - name: Checkout nvim-lspconfig
+        uses: actions/checkout@v7
+        with:
+          repository: neovim/nvim-lspconfig
+          path: /tmp/nvim-lspconfig
+      - name: Regenerate registry
+        run: |
+          mise registry > /tmp/mise-registry.txt
+          nvim -l scripts/generate-registry.lua /tmp/registry.json /tmp/mise-registry.txt /tmp/nvim-lspconfig/lsp
+      - name: Commit changes
+        run: |
+          if git diff --quiet; then
+            echo "registry is up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add lua/mise-lspconfig/registry.lua
+          git commit -m "chore: update registry from mason-registry"
+          git push
