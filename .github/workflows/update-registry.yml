@@ -30,11 +30,11 @@ jobs:
         uses: actions/checkout@v7
         with:
           repository: neovim/nvim-lspconfig
-          path: /tmp/nvim-lspconfig
+          path: nvim-lspconfig
       - name: Regenerate registry
         run: |
           mise registry > /tmp/mise-registry.txt
-          nvim -l scripts/generate-registry.lua /tmp/registry.json /tmp/mise-registry.txt /tmp/nvim-lspconfig/lsp
+          nvim -l scripts/generate-registry.lua /tmp/registry.json /tmp/mise-registry.txt nvim-lspconfig/lsp
       - name: Commit changes
         run: |
           if git diff --quiet; then
