@@ -2,6 +2,7 @@
 -- Do not edit by hand; run the script (or the update-registry workflow).
 return {
 	["ada_language_server"] = { tool = "ubi:AdaCore/ada_language_server", bin = { "ada_language_server" } },
+	["agentscript"] = { bin = { "agentscript-lsp" } },
 	["aiken"] = { bin = { "aiken" } },
 	["air"] = { tool = "ubi:posit-dev/air", bin = { "air" } },
 	["alloy_ls"] = { bin = { "alloy" } },
