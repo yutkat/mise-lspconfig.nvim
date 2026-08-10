@@ -263,7 +263,7 @@ return {
 	["rpmspec"] = { tool = "pipx:rpm-spec-language-server", bin = { "rpm_lsp_server" } },
 	["rubocop"] = { tool = "gem:rubocop", bin = { "rubocop" } },
 	["ruby_lsp"] = { tool = "gem:ruby-lsp", bin = { "ruby-lsp" } },
-	["ruff"] = { tool = "pipx:ruff", bin = { "ruff" } },
+	["ruff"] = { tool = "ruff", bin = { "ruff" } },
 	["ruff_lsp"] = { bin = { "ruff-lsp" } },
 	["rumdl"] = { tool = "rumdl", bin = { "rumdl" } },
 	["rune_languageserver"] = { bin = { "rune-languageserver" } },
