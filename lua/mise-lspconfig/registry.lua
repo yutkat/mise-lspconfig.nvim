@@ -47,6 +47,7 @@ return {
 	["circom-lsp"] = { bin = { "circom-lsp" } },
 	["clangd"] = { tool = "ubi:clangd/clangd", bin = { "clangd" } },
 	["clarinet"] = { bin = { "clarinet" } },
+	["clice"] = { bin = { "clice" } },
 	["clojure_lsp"] = { tool = "ubi:clojure-lsp/clojure-lsp", bin = { "clojure-lsp" } },
 	["cmake"] = { tool = "pipx:cmake-language-server", bin = { "cmake-language-server" } },
 	["cobol_ls"] = { tool = "ubi:eclipse-che4z/che-che4z-lsp-for-cobol", bin = { "cobol-language-support" } },
