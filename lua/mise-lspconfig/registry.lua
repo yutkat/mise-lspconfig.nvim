@@ -322,6 +322,7 @@ return {
 	["swift_mesonls"] = { bin = { "Swift-MesonLSP" } },
 	["symfony_lsp"] = { tool = "ubi:symfony/language-tools", bin = { "symfony-lsp" } },
 	["syntax_tree"] = { bin = { "stree" } },
+	["sysml_lsp"] = { bin = { "sysml-lsp" } },
 	["systemd_lsp"] = { tool = "ubi:JFryy/systemd-lsp", bin = { "systemd-lsp" } },
 	["tabby_ml"] = { bin = { "tabby-agent" } },
 	["tailwindcss"] = { tool = "npm:@tailwindcss/language-server", bin = { "tailwindcss-language-server" } },
