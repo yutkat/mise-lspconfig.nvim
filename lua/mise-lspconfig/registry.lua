@@ -17,6 +17,7 @@ return {
 	["astro"] = { tool = "npm:@astrojs/language-server", bin = { "astro-ls" } },
 	["atlas"] = { bin = { "atlas" } },
 	["atopile"] = { bin = { "ato" } },
+	["autocorrect"] = { bin = { "autocorrect" } },
 	["autohotkey_lsp"] = { tool = "ubi:thqby/vscode-autohotkey2-lsp", bin = { "autohotkey_lsp" } },
 	["autotools_ls"] = { tool = "pipx:autotools-language-server", bin = { "autotools-language-server" } },
 	["awk_ls"] = { tool = "npm:awk-language-server", bin = { "awk-language-server" } },
