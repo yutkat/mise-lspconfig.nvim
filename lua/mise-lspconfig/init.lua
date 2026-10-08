@@ -10,9 +10,25 @@ M.options = {
 	overrides = {},
 }
 
-local function has_bin(entry)
+-- Names of all entries in $PATH dirs. Scanning once is much cheaper than
+-- vim.fn.executable() walking $PATH for every registry bin.
+local function path_names()
+	local names = {}
+	for _, dir in ipairs(vim.split(vim.env.PATH or "", ":", { plain = true, trimempty = true })) do
+		local handle = vim.uv.fs_scandir(dir)
+		if handle then
+			for name in vim.uv.fs_scandir_next, handle do
+				names[name] = true
+			end
+		end
+	end
+	return names
+end
+
+local function has_bin(entry, on_path)
 	for _, bin in ipairs(entry.bin or {}) do
-		if vim.fn.executable(bin) == 1 then
+		-- Still confirm with executable() to respect the exec bit; only a few names hit.
+		if (not on_path or bin:find("/", 1, true) or on_path[bin]) and vim.fn.executable(bin) == 1 then
 			return true
 		end
 	end
@@ -32,9 +48,11 @@ end
 ---Known servers whose binary is on $PATH, minus excludes, sorted.
 ---@return string[]
 function M.available()
+	-- PATHEXT makes the scan unreliable on Windows; check each bin there.
+	local on_path = vim.fn.has("win32") == 0 and path_names() or nil
 	local names = {}
 	for name, entry in pairs(M.registry()) do
-		if not vim.tbl_contains(M.options.exclude, name) and has_bin(entry) then
+		if not vim.tbl_contains(M.options.exclude, name) and has_bin(entry, on_path) then
 			table.insert(names, name)
 		end
 	end

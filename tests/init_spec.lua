@@ -5,6 +5,7 @@ package.loaded["mise-lspconfig.registry"] = {
 	fallback_bin = { tool = "npm:fallback", bin = { "mise-lspconfig-no-such-bin", "sh" } },
 	absent = { tool = "npm:absent", bin = { "mise-lspconfig-no-such-bin" } },
 	unwanted = { tool = "npm:unwanted", bin = { "sh" } },
+	scanned = { tool = "npm:scanned", bin = { "mise-lspconfig-test-bin" } },
 }
 package.loaded["mise-lspconfig"] = nil
 local m = require("mise-lspconfig")
@@ -23,6 +24,24 @@ eq({ "fallback_bin", "present" }, m.available())
 -- overrides can add servers unknown to the generated registry
 m.setup({ auto_enable = false, exclude = { "unwanted" }, overrides = { nixd = { bin = { "sh" } } } })
 eq({ "fallback_bin", "nixd", "present" }, m.available())
+
+-- bins with a path component bypass the $PATH scan
+m.setup({ auto_enable = false, exclude = { "unwanted" }, overrides = { nixd = { bin = { "/bin/sh" } } } })
+eq({ "fallback_bin", "nixd", "present" }, m.available())
+
+-- $PATH is rescanned on every call, and a non-executable file on it is not reported
+local dir = vim.fn.tempname()
+vim.fn.mkdir(dir, "p")
+local bin = dir .. "/mise-lspconfig-test-bin"
+vim.fn.writefile({ "#!/bin/sh" }, bin)
+local saved_path = vim.env.PATH
+vim.env.PATH = dir .. ":" .. saved_path
+eq(false, vim.tbl_contains(m.available(), "scanned"), "non-executable bin reported")
+vim.fn.setfperm(bin, "rwxr-xr-x")
+eq(true, vim.tbl_contains(m.available(), "scanned"), "PATH change not picked up")
+vim.env.PATH = saved_path
+eq(false, vim.tbl_contains(m.available(), "scanned"), "stale PATH used")
+vim.fn.delete(dir, "rf")
 
 -- tool(): install-spec lookup for health hints
 eq("npm:present", m.tool("present"))
