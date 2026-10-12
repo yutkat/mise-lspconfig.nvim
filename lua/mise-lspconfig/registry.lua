@@ -210,6 +210,7 @@ return {
 	["nil_ls"] = { tool = "cargo:nil", bin = { "nil" } },
 	["nim_langserver"] = { tool = "ubi:nim-lang/langserver", bin = { "nimlangserver" } },
 	["nixd"] = { bin = { "nixd" } },
+	["nlpplus_ls"] = { bin = { "nlpplus-language-server" } },
 	["ntt"] = { bin = { "ntt" } },
 	["nushell"] = { bin = { "nu" } },
 	["nxls"] = { bin = { "nxls" } },
